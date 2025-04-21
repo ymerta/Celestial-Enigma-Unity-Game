@@ -13,6 +13,8 @@ public class CharacterMovement3D : MonoBehaviour
     private Vector3 moveDirection;
     private bool isCrouching = false;
 
+    public bool isIsometric = false; // Ýzometrik kontrol aktif mi?
+
     void Start()
     {
         controller = GetComponent<CharacterController>();
@@ -21,8 +23,36 @@ public class CharacterMovement3D : MonoBehaviour
 
     void Update()
     {
-        float moveInput = Input.GetAxis("Horizontal"); // Saða-Sola hareket
-        moveDirection.x = moveInput * (isCrouching ? crouchSpeed : moveSpeed); // Eðer çömeliyorsa hýz düþer
+        if (isIsometric)
+        {
+            float moveX = Input.GetAxis("Horizontal");
+            float moveZ = Input.GetAxis("Vertical");
+            Vector3 input = new Vector3(moveX, 0, moveZ).normalized;
+
+            // Kamera yönüne göre input'u döndür
+            Vector3 camForward = Camera.main.transform.forward;
+            Vector3 camRight = Camera.main.transform.right;
+
+            // Y düzleminde düzleþtir
+            camForward.y = 0;
+            camRight.y = 0;
+            camForward.Normalize();
+            camRight.Normalize();
+
+            Vector3 move = camForward * input.z + camRight * input.x;
+            move = move.normalized * (isCrouching ? crouchSpeed : moveSpeed);
+
+            moveDirection.x = move.x;
+            moveDirection.z = move.z;
+        }
+
+        else
+        {
+            // 2.5D mod: sadece X ekseninde hareket
+            float moveInput = Input.GetAxis("Horizontal");
+            moveDirection.x = moveInput * (isCrouching ? crouchSpeed : moveSpeed);
+            moveDirection.z = 0; // Z ekseni kilitli
+        }
 
         if (controller.isGrounded)
         {
@@ -35,8 +65,6 @@ public class CharacterMovement3D : MonoBehaviour
         {
             moveDirection.y -= gravity * Time.deltaTime; // Yerçekimi
         }
-
-        moveDirection.z = 0; // Z ekseninde hareketi engelle
 
         controller.Move(moveDirection * Time.deltaTime);
 
@@ -58,5 +86,12 @@ public class CharacterMovement3D : MonoBehaviour
             controller.height = originalHeight; // Boyu eski haline getir
             Debug.Log("Oyuncu çömelmeyi býraktý!");
         }
+    }
+
+    public void TeleportTo(Vector3 newPosition)
+    {
+        controller.enabled = false;
+        transform.position = newPosition;
+        controller.enabled = true;
     }
 }
