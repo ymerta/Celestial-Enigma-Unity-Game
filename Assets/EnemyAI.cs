@@ -1,7 +1,9 @@
+using NUnit.Framework.Internal;
 using UnityEngine;
 
 public class EnemyAI : MonoBehaviour
 {
+    public bool test;
     public Transform player;
     public float detectionRange = 5f;
     public bool playerDetected = false;
