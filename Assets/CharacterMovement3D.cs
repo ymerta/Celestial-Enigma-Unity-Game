@@ -93,5 +93,9 @@ public class CharacterMovement3D : MonoBehaviour
         controller.enabled = false;
         transform.position = newPosition;
         controller.enabled = true;
+
+
+        // Kamera deðiþtirme
+        FindFirstObjectByType<CameraSwitch>().SwitchToIsometric();
     }
 }
