@@ -1,4 +1,0 @@
-repository "CelestialEnigma/CelestialEnigma@18967213561928@cloud"
-  path "/"
-    br "/main"
-    co "/main"
