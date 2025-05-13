@@ -319,28 +319,22 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 8654383e27cf0744a8166a861483990d, type: 3}
   m_PrefabInstance: {fileID: 1253351625}
   m_PrefabAsset: {fileID: 0}
---- !u!95 &549589496
-Animator:
-  serializedVersion: 7
+--- !u!111 &549589496
+Animation:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 549589494}
   m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: c7c1ba95e47095548aa68dded0fdfccc, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
+  serializedVersion: 4
+  m_Animation: {fileID: 0}
+  m_Animations: []
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
   m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
+  m_UpdateMode: 0
+  m_CullingType: 0
 --- !u!4 &550961230 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 1e0a943d2298d764cb42ddca21022f23, type: 3}
@@ -1099,6 +1093,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: "k\u0131z"
       objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: 1e0a943d2298d764cb42ddca21022f23, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 1075914dad7c11f4697abfb3fc427c23, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3114,7 +3112,7 @@ Transform:
   m_GameObject: {fileID: 1910983591108921664}
   serializedVersion: 2
   m_LocalRotation: {x: 0.706062, y: -0.38661876, z: -0.4918049, w: -0.3318589}
-  m_LocalPosition: {x: -18.073862, y: 4.109836, z: 47.82521}
+  m_LocalPosition: {x: -18.073862, y: 8.3, z: 64.57}
   m_LocalScale: {x: 23.503271, y: 23.50327, z: 23.503265}
   m_ConstrainProportionsScale: 0
   m_Children: []
