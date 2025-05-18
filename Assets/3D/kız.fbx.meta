@@ -13,7 +13,7 @@ ModelImporter:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
     resampleCurves: 1
-    optimizeGameObjects: 1
+    optimizeGameObjects: 0
     removeConstantScaleCurves: 0
     motionNodeName: 
     animationImportErrors: 
@@ -22,7 +22,7 @@ ModelImporter:
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
     importConstraints: 0
-    animationCompression: 1
+    animationCompression: 3
     animationRotationError: 0.5
     animationPositionError: 0.5
     animationScaleError: 0.5
@@ -80,7 +80,47 @@ ModelImporter:
   humanDescription:
     serializedVersion: 3
     human: []
-    skeleton: []
+    skeleton:
+    - name: "k\u0131z(Clone)"
+      parentName: 
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Sphere
+      parentName: "k\u0131z(Clone)"
+      position: {x: 1.6423925, y: 1.30714, z: 0.1800066}
+      rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
+      scale: {x: 29.776007, y: 27.982286, z: 29.776007}
+    - name: Sphere.001
+      parentName: "k\u0131z(Clone)"
+      position: {x: 1.6423925, y: 0.58177125, z: 0.1800066}
+      rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
+      scale: {x: 27.868256, y: 26.189466, z: 27.868256}
+    - name: Sphere.002
+      parentName: "k\u0131z(Clone)"
+      position: {x: 1.6423925, y: 0.9695296, z: 0.1800066}
+      rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
+      scale: {x: 30.318254, y: 28.491875, z: 15.20347}
+    - name: Sphere.003
+      parentName: "k\u0131z(Clone)"
+      position: {x: 1.6423925, y: 1.30714, z: 0.1800066}
+      rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
+      scale: {x: 29.776007, y: 27.982286, z: 29.776007}
+    - name: Sphere.004
+      parentName: "k\u0131z(Clone)"
+      position: {x: 1.503298, y: 1.2700293, z: 0.41308615}
+      rotation: {x: -0.6841659, y: -0.17865378, z: -0.17865378, w: 0.6841658}
+      scale: {x: 7.0974193, y: 3.8222249, z: 7.097419}
+    - name: Sphere.005
+      parentName: "k\u0131z(Clone)"
+      position: {x: 1.5304666, y: 0.08545923, z: 0.1800066}
+      rotation: {x: 0.7071069, y: 0, z: -0, w: 0.7071067}
+      scale: {x: 7.636766, y: 7.636766, z: 7.636766}
+    - name: Sphere.006
+      parentName: "k\u0131z(Clone)"
+      position: {x: 1.5302334, y: 0.16032892, z: 0.24195857}
+      rotation: {x: -0.49836037, y: 0, z: -0, w: 0.86697}
+      scale: {x: 14.621465, y: 16.44097, z: 7.9906855}
     armTwist: 0.5
     foreArmTwist: 0.5
     upperLegTwist: 0.5
@@ -91,7 +131,7 @@ ModelImporter:
     globalScale: 1
     rootMotionBoneName: 
     hasTranslationDoF: 0
-    hasExtraRoot: 0
+    hasExtraRoot: 1
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   autoGenerateAvatarMappingIfUnspecified: 1

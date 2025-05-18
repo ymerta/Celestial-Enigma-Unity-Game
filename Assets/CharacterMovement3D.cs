@@ -3,22 +3,25 @@ using UnityEngine;
 public class CharacterMovement3D : MonoBehaviour
 {
     public float moveSpeed = 5f;
-    public float crouchSpeed = 2f; // Çömelme hýzý
+    public float crouchSpeed = 2f;
     public float jumpForce = 10f;
     public float gravity = 20f;
     private float originalHeight;
-    public float crouchHeight = 1f; // Çömelince boy
+    public float crouchHeight = 1f;
 
     private CharacterController controller;
     private Vector3 moveDirection;
     private bool isCrouching = false;
 
-    public bool isIsometric = false; // Ýzometrik kontrol aktif mi?
+    public bool isIsometric = false;
+
+    private Animator animator;
 
     void Start()
     {
         controller = GetComponent<CharacterController>();
-        originalHeight = controller.height; // Oyuncunun orijinal yüksekliðini kaydet
+        originalHeight = controller.height;
+        animator = GetComponentInChildren<Animator>(); // Animator, "kiz" alt objesinde ise
     }
 
     void Update()
@@ -29,11 +32,8 @@ public class CharacterMovement3D : MonoBehaviour
             float moveZ = Input.GetAxis("Vertical");
             Vector3 input = new Vector3(moveX, 0, moveZ).normalized;
 
-            // Kamera yönüne göre input'u döndür
             Vector3 camForward = Camera.main.transform.forward;
             Vector3 camRight = Camera.main.transform.right;
-
-            // Y düzleminde düzleþtir
             camForward.y = 0;
             camRight.y = 0;
             camForward.Normalize();
@@ -44,47 +44,56 @@ public class CharacterMovement3D : MonoBehaviour
 
             moveDirection.x = move.x;
             moveDirection.z = move.z;
-        }
 
+            // Yürüyorsa animasyonu aç
+            bool isWalking = moveDirection.x != 0 || moveDirection.z != 0;
+            animator.SetBool("isWalking", isWalking);
+        }
         else
         {
-            // 2.5D mod: sadece X ekseninde hareket
             float moveInput = Input.GetAxis("Horizontal");
             moveDirection.x = moveInput * (isCrouching ? crouchSpeed : moveSpeed);
-            moveDirection.z = 0; // Z ekseni kilitli
+            moveDirection.z = 0;
+
+            // 2.5D yürüyüþ animasyonu
+            bool isWalking = Mathf.Abs(moveDirection.x) > 0.01f;
+            animator.SetBool("isWalking", isWalking);
         }
 
         if (controller.isGrounded)
         {
-            if (Input.GetButtonDown("Jump") && !isCrouching) // Çömelirken zýplayamaz
+            animator.SetBool("isJumping", false); // Yerdeyse zýplama kapanýr
+
+            if (Input.GetButtonDown("Jump") && !isCrouching)
             {
                 moveDirection.y = jumpForce;
+                animator.SetBool("isJumping", true); // Zýplama animasyonu baþlat
             }
         }
         else
         {
-            moveDirection.y -= gravity * Time.deltaTime; // Yerçekimi
+            moveDirection.y -= gravity * Time.deltaTime;
         }
 
         controller.Move(moveDirection * Time.deltaTime);
 
-        HandleCrouch(); // Çömelme fonksiyonunu çaðýr
+        HandleCrouch();
     }
 
     void HandleCrouch()
     {
-        if (Input.GetKeyDown(KeyCode.LeftControl)) // "CTRL" tuþuna basýnca çömel
+        if (Input.GetKeyDown(KeyCode.LeftControl))
         {
             isCrouching = true;
-            controller.height = crouchHeight; // Boyu küçült
-            Debug.Log("Oyuncu çömeldi!");
+            controller.height = crouchHeight;
+            animator.SetBool("isCrouching", true);
         }
 
-        if (Input.GetKeyUp(KeyCode.LeftControl)) // "CTRL" býrakýlýnca normale dön
+        if (Input.GetKeyUp(KeyCode.LeftControl))
         {
             isCrouching = false;
-            controller.height = originalHeight; // Boyu eski haline getir
-            Debug.Log("Oyuncu çömelmeyi býraktý!");
+            controller.height = originalHeight;
+            animator.SetBool("isCrouching", false);
         }
     }
 
@@ -94,8 +103,6 @@ public class CharacterMovement3D : MonoBehaviour
         transform.position = newPosition;
         controller.enabled = true;
 
-
-        // Kamera deðiþtirme
         FindFirstObjectByType<CameraSwitch>().SwitchToIsometric();
     }
 }
