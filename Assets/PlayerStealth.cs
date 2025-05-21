@@ -1,18 +1,16 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public class PlayerStealth : MonoBehaviour
 {
-    private Renderer playerRenderer;
+    public GameObject characterModel; // â† buraya "export_dbe..." objesini at
+
     private CharacterMovement3D movementScript;
-    private Collider playerCollider;
     private bool isHidden = false;
     private bool canExit = false;
 
     void Start()
     {
-        playerRenderer = GetComponent<Renderer>();
         movementScript = GetComponent<CharacterMovement3D>();
-        playerCollider = GetComponent<Collider>();
     }
 
     void Update()
@@ -27,26 +25,26 @@ public class PlayerStealth : MonoBehaviour
     {
         isHidden = true;
         canExit = true;
-        playerRenderer.enabled = false; // Oyuncuyu görünmez yap
-        movementScript.enabled = false; // Hareketi kapat
 
-        // **NPC'nin oyuncuyla çarpışmasını kapat**
+        characterModel.SetActive(false); // kÄ±z modelini gizle
+        movementScript.enabled = false;
+
         Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Enemy"), true);
 
-        Debug.Log("Oyuncu GİZLENDİ! 'E' tuşuna basarak çıkabilirsin.");
+        Debug.Log("Oyuncu GÄ°ZLENDÄ°! 'E' tuÅŸuna basarak Ã§Ä±kabilirsin.");
     }
 
     public void ExitHiding()
     {
         isHidden = false;
         canExit = false;
-        playerRenderer.enabled = true; // Oyuncuyu tekrar görünür yap
-        movementScript.enabled = true; // Hareketi tekrar aç
 
-        // **NPC'nin oyuncuyla çarpışmasını tekrar aç**
+        characterModel.SetActive(true); // tekrar gÃ¶rÃ¼nÃ¼r yap
+        movementScript.enabled = true;
+
         Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Enemy"), false);
 
-        Debug.Log("Oyuncu ÇIKTI ve tekrar göründü!");
+        Debug.Log("Oyuncu Ã‡IKTI ve tekrar gÃ¶rÃ¼ndÃ¼!");
     }
 
     public bool IsHidden()

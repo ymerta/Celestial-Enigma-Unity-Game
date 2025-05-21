@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public class CharacterMovement3D : MonoBehaviour
 {
@@ -16,6 +16,7 @@ public class CharacterMovement3D : MonoBehaviour
     public bool isIsometric = false;
 
     private Animator animator;
+    private float previousDirection = 1f; // DÃ¶nÃ¼ÅŸ yÃ¶nÃ¼ kontrolÃ¼
 
     void Start()
     {
@@ -45,7 +46,6 @@ public class CharacterMovement3D : MonoBehaviour
             moveDirection.x = move.x;
             moveDirection.z = move.z;
 
-            // Yürüyorsa animasyonu aç
             bool isWalking = moveDirection.x != 0 || moveDirection.z != 0;
             animator.SetBool("isWalking", isWalking);
         }
@@ -55,19 +55,39 @@ public class CharacterMovement3D : MonoBehaviour
             moveDirection.x = moveInput * (isCrouching ? crouchSpeed : moveSpeed);
             moveDirection.z = 0;
 
-            // 2.5D yürüyüþ animasyonu
             bool isWalking = Mathf.Abs(moveDirection.x) > 0.01f;
             animator.SetBool("isWalking", isWalking);
+
+            // DÃ¶nÃ¼ÅŸ kontrolÃ¼ ve yÃ¶n flip
+            if (moveInput != 0)
+            {
+                float currentDirection = Mathf.Sign(moveInput);
+
+                if (currentDirection != previousDirection)
+                {
+                    if (currentDirection > previousDirection)
+                        animator.SetTrigger("turnRight");
+                    else
+                        animator.SetTrigger("turnLeft");
+
+                    previousDirection = currentDirection;
+                }
+
+                // Karakterin yÃ¼zÃ¼nÃ¼ Ã§evirmek
+                Vector3 scale = transform.localScale;
+                scale.x = currentDirection * Mathf.Abs(scale.x);
+                transform.localScale = scale;
+            }
         }
 
         if (controller.isGrounded)
         {
-            animator.SetBool("isJumping", false); // Yerdeyse zýplama kapanýr
+            animator.SetBool("isJumping", false);
 
             if (Input.GetButtonDown("Jump") && !isCrouching)
             {
                 moveDirection.y = jumpForce;
-                animator.SetBool("isJumping", true); // Zýplama animasyonu baþlat
+                animator.SetBool("isJumping", true);
             }
         }
         else
