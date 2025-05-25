@@ -1,29 +1,39 @@
 ﻿using UnityEngine;
 using TMPro;
+using System.Collections;
 
 public class DialogueUI : MonoBehaviour
 {
     public GameObject dialoguePanel;
     public TextMeshProUGUI dialogueText;
-    [TextArea(2, 5)]
-    public string hintMessage = "Altın ışık seni uyandırır.";
+    public CanvasGroup canvasGroup;
+    public float displayTime = 3f;
 
-    private bool isActive = false;
+    private Coroutine currentRoutine;
 
-   public void ShowDialogue(string message)
-{
-    dialogueText.text = message;
-    dialoguePanel.SetActive(true); // 👈 Paneli göster
-    isActive = true;
-}
-
-void Update()
-{
-    if (isActive && Input.GetKeyDown(KeyCode.Return)) // ⏎ Enter ile kapat
+    public void ShowDialogue(string message)
     {
-        dialoguePanel.SetActive(false); // 👈 Paneli gizle
-        isActive = false;
+        if (currentRoutine != null)
+            StopCoroutine(currentRoutine);
+
+        currentRoutine = StartCoroutine(ShowRoutine(message));
     }
-}
-    
+
+    private IEnumerator ShowRoutine(string message)
+    {
+        // ✅ Aktif et
+        dialoguePanel.SetActive(true);
+        dialogueText.gameObject.SetActive(true);
+        canvasGroup.alpha = 1f;
+
+        dialogueText.text = message;
+
+        yield return new WaitForSeconds(displayTime);
+
+        // ✅ Kapat
+        dialogueText.text = "";
+        dialogueText.gameObject.SetActive(false);
+        canvasGroup.alpha = 0f;
+        dialoguePanel.SetActive(false);
+    }
 }

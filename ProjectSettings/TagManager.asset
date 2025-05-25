@@ -11,6 +11,8 @@ TagManager:
   - GreenPlatform
   - BluePlatform
   - Revealable
+  - LightOrb
+  - Platform
   layers:
   - Default
   - TransparentFX

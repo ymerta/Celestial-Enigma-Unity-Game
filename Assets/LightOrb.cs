@@ -1,12 +1,14 @@
 using UnityEngine;
+using System.Collections;
 
 public class LightOrb : MonoBehaviour
 {
     public float duration = 3f;
+    public GameObject correctPortal;
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Revealable"))
+        if (other.gameObject == correctPortal)
         {
             Renderer rend = other.GetComponent<Renderer>();
             if (rend != null)
@@ -14,14 +16,15 @@ public class LightOrb : MonoBehaviour
                 rend.enabled = true;
                 StartCoroutine(DisableAfterSeconds(rend, duration));
             }
-        }
 
-        Destroy(gameObject); // ýþýk küresi kaybolsun
+            Destroy(gameObject); // ? sadece doðru portala çarptýðýnda yok ol
+        }
     }
 
-    System.Collections.IEnumerator DisableAfterSeconds(Renderer rend, float seconds)
+    IEnumerator DisableAfterSeconds(Renderer rend, float seconds)
     {
         yield return new WaitForSeconds(seconds);
-        rend.enabled = false;
+        if (rend != null)
+            rend.enabled = false;
     }
 }
