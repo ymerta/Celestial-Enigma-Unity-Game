@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 4018263506066719301}
   m_Layer: 0
   m_Name: LightOrb
-  m_TagString: Untagged
+  m_TagString: LightOrb
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -115,7 +115,7 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 0
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 0
 --- !u!135 &8915456822340425032
@@ -151,6 +151,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 592fec2c0cac2a64182ade49edc1c9dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  caster: {fileID: 0}
   duration: 3
   correctPortal: {fileID: 0}
 --- !u!96 &4018263506066719301

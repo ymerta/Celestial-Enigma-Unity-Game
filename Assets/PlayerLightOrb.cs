@@ -1,8 +1,9 @@
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerLightOrb : MonoBehaviour
 {
-    [Header("Orb Ayarlar�")]
+    [Header("Orb Ayarları")]
     public GameObject lightOrbPrefab;
     public float shootForce = 10f;
     public float cooldown = 3f;
@@ -11,13 +12,23 @@ public class PlayerLightOrb : MonoBehaviour
     private float lastUsedTime;
     private bool hasLearnedOrb = false;
 
+
+    void Start()
+    {
+        // Eğer bu MazeshiftRealm sahnesiyse, büyüyü otomatik öğrenmiş olarak başlasın
+        if (SceneManager.GetActiveScene().name == "MazeShiftRealm")
+        {
+            LearnLightOrb();
+        }
+    }
+
     void Update()
     {
-        // B�y� ��renilmemi�se hi�bir �ey yapma
+        // Büyü öğrenilmemişse hiçbir şey yapma
         if (!hasLearnedOrb)
             return;
 
-        // Q tu�una bas�ld���nda ve cooldown ge�ti�inde
+        // Q tuşuna basıldığında ve cooldown geçtiğinde
         if (Input.GetKeyDown(KeyCode.Q) && Time.time >= lastUsedTime + cooldown)
         {
             ShootLightOrb();
@@ -28,17 +39,29 @@ public class PlayerLightOrb : MonoBehaviour
     public void LearnLightOrb()
     {
         hasLearnedOrb = true;
-        Debug.Log("LightOrb b�y�s� ��renildi!");
+        Debug.Log("LightOrb büyüsü öğrenildi!");
     }
 
-    public GameObject correctPortal; // Bunu Inspector'dan atayacaks�n
+    public GameObject correctPortal; // Bunu Inspector'dan atayacaksın
 
     void ShootLightOrb()
     {
-        if (correctPortal == null) return;
-
         Vector3 spawnPos = transform.position + Vector3.up * 1.2f;
-        Vector3 direction = (correctPortal.transform.position - spawnPos).normalized;
+
+        Vector3 direction;
+
+        if (correctPortal != null)
+        {
+            direction = (correctPortal.transform.position - spawnPos).normalized;
+        }
+        else
+        {
+            // Oyuncunun sağa baktığı yön varsayılan olarak sağ (Vector3.right)
+            direction = Vector3.right;
+
+            // Eğer oyuncunun yönünü alabileceğin bir sistem varsa (örneğin scale ile bakış yönü), onu da kullanabilirsin:
+            // direction = transform.right; // Bu da oyuncunun bakış yönü olur
+        }
 
         GameObject orb = Instantiate(lightOrbPrefab, spawnPos, Quaternion.LookRotation(direction));
 
@@ -50,6 +73,7 @@ public class PlayerLightOrb : MonoBehaviour
 
         Destroy(orb, orbLifetime);
     }
+
 
 
 }

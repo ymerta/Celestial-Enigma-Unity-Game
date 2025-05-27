@@ -46,9 +46,19 @@ public class CharacterMovement3D : MonoBehaviour
             moveDirection.x = move.x;
             moveDirection.z = move.z;
 
-            bool isWalking = moveDirection.x != 0 || moveDirection.z != 0;
+            // ✅ Karakterin yönünü X ekseninde çevir (sağa/sola dönsün)
+            if (input.x != 0)
+            {
+                float currentDirection = Mathf.Sign(input.x);
+                Vector3 scale = transform.localScale;
+                scale.x = currentDirection * Mathf.Abs(scale.x);
+                transform.localScale = scale;
+            }
+
+            bool isWalking = moveDirection.x != 0 || moveDirection.z != 0; 
             animator.SetBool("isWalking", isWalking);
         }
+
         else
         {
             float moveInput = Input.GetAxis("Horizontal");

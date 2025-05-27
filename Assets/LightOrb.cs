@@ -3,8 +3,18 @@ using System.Collections;
 
 public class LightOrb : MonoBehaviour
 {
+    public GameObject caster; // Orb'u atan oyuncu (Player)
+
     public float duration = 3f;
     public GameObject correctPortal;
+
+    public float spawnTime;
+
+    void Start()
+    {
+        spawnTime = Time.time;
+    }
+
 
     void OnTriggerEnter(Collider other)
     {

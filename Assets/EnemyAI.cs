@@ -1,4 +1,4 @@
-using NUnit.Framework.Internal;
+ï»¿using NUnit.Framework.Internal;
 using UnityEngine;
 
 public class EnemyAI : MonoBehaviour
@@ -50,11 +50,11 @@ public class EnemyAI : MonoBehaviour
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
         PlayerStealth playerStealth = player.GetComponent<PlayerStealth>();
 
-        // **Eðer oyuncu "Hidden" layer'ýndaysa veya saklandýysa, NPC onu görmeyecek**
+        // **EÄŸer oyuncu "Hidden" layer'Ä±ndaysa veya saklandÄ±ysa, NPC onu gÃ¶rmeyecek**
         if (distanceToPlayer < detectionRange && player.gameObject.layer != LayerMask.NameToLayer("Hidden") && !playerStealth.IsHidden())
         {
             playerDetected = true;
-            Debug.Log("Oyuncu tespit edildi! Takip baþlýyor...");
+            Debug.Log("Oyuncu tespit edildi! Takip baÅŸlÄ±yor...");
         }
         else
         {
