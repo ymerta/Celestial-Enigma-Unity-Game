@@ -1,5 +1,4 @@
-﻿using NUnit.Framework.Internal;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class EnemyAI : MonoBehaviour
 {
@@ -12,13 +11,33 @@ public class EnemyAI : MonoBehaviour
     private Vector3 target;
     private bool stopMoving = false;
 
+    [Header("Freeze Icon")]
+    public GameObject freezeIconObject;
+
+    // 🔹 STUN
+    private bool isStunned = false;
+    private float stunEndTime;
+
     void Start()
     {
         target = pointA.position;
+
+        if (freezeIconObject != null)
+            freezeIconObject.SetActive(false);
     }
 
     void Update()
     {
+        // 🔒 Eğer stunlıysa, sadece süreyi kontrol et
+        if (isStunned)
+        {
+            if (Time.time > stunEndTime)
+            {
+                Unstun();
+            }
+            return;
+        }
+
         if (!stopMoving)
         {
             Patrol();
@@ -50,8 +69,9 @@ public class EnemyAI : MonoBehaviour
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
         PlayerStealth playerStealth = player.GetComponent<PlayerStealth>();
 
-        // **Eğer oyuncu "Hidden" layer'ındaysa veya saklandıysa, NPC onu görmeyecek**
-        if (distanceToPlayer < detectionRange && player.gameObject.layer != LayerMask.NameToLayer("Hidden") && !playerStealth.IsHidden())
+        if (distanceToPlayer < detectionRange &&
+            player.gameObject.layer != LayerMask.NameToLayer("Hidden") &&
+            !playerStealth.IsHidden())
         {
             playerDetected = true;
             Debug.Log("Oyuncu tespit edildi! Takip başlıyor...");
@@ -65,5 +85,27 @@ public class EnemyAI : MonoBehaviour
         {
             transform.position = Vector3.MoveTowards(transform.position, player.position, moveSpeed * Time.deltaTime);
         }
+    }
+
+    // 🔹 Stun uygulanınca çağrılacak
+    public void Stun(float duration)
+    {
+        isStunned = true;
+        stunEndTime = Time.time + duration;
+
+        if (freezeIconObject != null)
+            freezeIconObject.SetActive(true);
+
+        Debug.Log($"{gameObject.name} sersemletildi!");
+    }
+
+    private void Unstun()
+    {
+        isStunned = false;
+
+        if (freezeIconObject != null)
+            freezeIconObject.SetActive(false);
+
+        Debug.Log($"{gameObject.name} sersemletmeden çıktı.");
     }
 }

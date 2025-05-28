@@ -12,6 +12,7 @@ public class CharacterMovement3D : MonoBehaviour
     private CharacterController controller;
     private Vector3 moveDirection;
     private bool isCrouching = false;
+public bool isControllable = true; // dışarıdan kapatıp açmak için
 
     public bool isIsometric = false;
 
@@ -27,6 +28,8 @@ public class CharacterMovement3D : MonoBehaviour
 
     void Update()
     {
+        if (!isControllable) return;
+
         if (isIsometric)
         {
             float moveX = Input.GetAxis("Horizontal");
@@ -55,7 +58,7 @@ public class CharacterMovement3D : MonoBehaviour
                 transform.localScale = scale;
             }
 
-            bool isWalking = moveDirection.x != 0 || moveDirection.z != 0; 
+            bool isWalking = moveDirection.x != 0 || moveDirection.z != 0;
             animator.SetBool("isWalking", isWalking);
         }
 

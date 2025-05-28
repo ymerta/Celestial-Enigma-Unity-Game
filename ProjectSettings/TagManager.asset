@@ -13,6 +13,7 @@ TagManager:
   - Revealable
   - LightOrb
   - Platform
+  - Selectable
   layers:
   - Default
   - TransparentFX
