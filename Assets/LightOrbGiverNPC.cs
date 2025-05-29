@@ -7,6 +7,7 @@ public class LightOrbGiverNPC : MonoBehaviour
     private bool playerInRange = false;
     private bool hasGivenOrb = false;
 
+
     void Update()
     {
         if (playerInRange && !hasGivenOrb && Input.GetKeyDown(KeyCode.E))
@@ -18,6 +19,7 @@ public class LightOrbGiverNPC : MonoBehaviour
                 interactionUI.SetActive(false);
 
         }
+
     }
 
     void OnTriggerEnter(Collider other)

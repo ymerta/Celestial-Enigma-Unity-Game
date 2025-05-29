@@ -6,6 +6,8 @@ public class NPCIllusion : MonoBehaviour
     public int npcID = 0;
     public DialogueUI dialogueSystem;
 
+    public GameObject spellPanel; // ✅ Büyü paneli veya ikonu (SpellPanel)
+
     private bool playerInRange = false;
     private bool hasGivenOrb = false;
 
@@ -31,6 +33,13 @@ public class NPCIllusion : MonoBehaviour
                 if (currentLineIndex < realNpcLines.Length)
                 {
                     dialogueSystem.ShowDialogue(realNpcLines[currentLineIndex]);
+
+                    // ✅ 4. cümleden sonra büyü panelini göster (index 3)
+                    if (currentLineIndex == 3 && spellPanel != null)
+                    {
+                        spellPanel.SetActive(true);
+                    }
+
                     currentLineIndex++;
                 }
 

@@ -1,30 +1,26 @@
-using UnityEngine;
-using TMPro;
+ï»¿using UnityEngine;
 
 public class TutorialTrigger : MonoBehaviour
 {
-    public string tutorialMessage = "W ve D ile hareket et.";
-    public GameObject tutorialUI; // Text UI nesnesi
+    [TextArea]
+    public string tutorialMessage;
 
-    private void Start()
-    {
-        tutorialUI.SetActive(false); // Baþta görünmesin
-    }
+    public float hideDelay = 3f;
 
-    private void OnTriggerEnter(Collider other)
+    private bool hasTriggered = false;
+
+    void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && !hasTriggered)
         {
-            tutorialUI.SetActive(true);
-            tutorialUI.GetComponentInChildren<TextMeshProUGUI>().text = tutorialMessage;
+            hasTriggered = true;
+            TutorialUI.Instance.ShowMessage(tutorialMessage);
+            Invoke("HideMessage", hideDelay); 
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    void HideMessage()
     {
-        if (other.CompareTag("Player"))
-        {
-            tutorialUI.SetActive(false);
-        }
+        TutorialUI.Instance.HideMessage();
     }
 }

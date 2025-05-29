@@ -121,6 +121,7 @@ public bool isControllable = true; // dışarıdan kapatıp açmak için
             isCrouching = true;
             controller.height = crouchHeight;
             animator.SetBool("isCrouching", true);
+            Debug.Log("Crouch başladı");
         }
 
         if (Input.GetKeyUp(KeyCode.LeftControl))
@@ -128,7 +129,9 @@ public bool isControllable = true; // dışarıdan kapatıp açmak için
             isCrouching = false;
             controller.height = originalHeight;
             animator.SetBool("isCrouching", false);
+            Debug.Log("Crouch bitti");
         }
+
     }
 
     public void TeleportTo(Vector3 newPosition)
