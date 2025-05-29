@@ -22,6 +22,8 @@ public class PlatformMagic : MonoBehaviour
     public GameObject arrowRight;
     public Color enabledColor = Color.white;
     public Color disabledColor = Color.gray;
+    [Header("Platform Spell UI")]
+    public GameObject platformSpellSlotUI; // UI’daki SpellSlot3 objesi
 
     [Header("UI Panel")]
     public GameObject directionPanel;
@@ -33,20 +35,31 @@ public class PlatformMagic : MonoBehaviour
     public float stunDuration = 3f;
     public float stunCooldown = 5f;
     private float lastStunTime;
+    [Header("Spell Unlock")]
+    public bool hasPlatformSpell = false;
 
-    void Start()
-    {
-        characterMovement = FindFirstObjectByType<CharacterMovement3D>();
+  void Start()
+{
+    characterMovement = FindFirstObjectByType<CharacterMovement3D>();
 
-        if (directionPanel != null)
-            directionPanel.SetActive(false);
+    if (directionPanel != null)
+        directionPanel.SetActive(false);
 
-        if (stunCooldownText != null)
-            stunCooldownText.gameObject.SetActive(false);
-    }
+    if (stunCooldownText != null)
+        stunCooldownText.gameObject.SetActive(false);
+
+   
+}
+
 
     void Update()
     {
+
+        HandleStunSpell(); // her zaman çalışır
+
+
+
+        if (!hasPlatformSpell) return; // 🔒 Büyü henüz alınmamışsa hiçbir şey yapılmaz
         // === PLATFORM SEÇME ===
         if (Input.GetKeyDown(KeyCode.F))
         {
@@ -134,7 +147,7 @@ public class PlatformMagic : MonoBehaviour
         }
 
         // === STUN BÜYÜSÜ ===
-        if (Input.GetKeyDown(KeyCode.E) && Time.time >= lastStunTime + stunCooldown)
+        if (Input.GetKeyDown(KeyCode.R) && Time.time >= lastStunTime + stunCooldown)
         {
             CastStun();
             lastStunTime = Time.time;
@@ -224,6 +237,17 @@ public class PlatformMagic : MonoBehaviour
             Image img = arrow.GetComponent<Image>();
             if (img != null)
                 img.color = isEnabled ? enabledColor : disabledColor;
+        }
+    }
+    void HandleStunSpell()
+    {
+        if (Input.GetKeyDown(KeyCode.R) && Time.time >= lastStunTime + stunCooldown)
+        {
+            CastStun();
+            lastStunTime = Time.time;
+
+            if (stunIcon != null)
+                StartCoroutine(SetStunIconCooldown(stunCooldown));
         }
     }
 

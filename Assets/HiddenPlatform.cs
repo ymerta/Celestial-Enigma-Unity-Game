@@ -16,7 +16,7 @@ public class HiddenPlatform : MonoBehaviour
     public void RevealTemporarily(float duration)
     {
         SetVisibility(true);
-        StartCoroutine(HideAfterDelay(duration));
+        StartCoroutine(HideAfterDelay(5f));
     }
 
     private void SetVisibility(bool visible)

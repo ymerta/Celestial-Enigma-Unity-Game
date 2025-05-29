@@ -5,24 +5,33 @@ public class PlayerPlatformSpell : MonoBehaviour
     public float castRange = 10f;  // Büyü menzili
     private PuzzlePlatform selectedPlatform;
 
+    [Header("Spell Activation")]
+    public bool hasPlatformSpell = false; // ✅ Başta kilitli, NPC verince açılacak
+
     void Update()
     {
+        if (!hasPlatformSpell) return; // 🔒 Büyü henüz açılmadıysa hiçbir şey yapma
+
         // 🔹 F tuşuna basıldığında ray gönder, platform seç
         if (Input.GetKeyDown(KeyCode.F))
         {
-            Ray ray = new Ray(Camera.main.transform.position, Camera.main.transform.forward); // kameraya göre bakış yönü
+            Ray ray = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
             if (Physics.Raycast(ray, out RaycastHit hit, castRange))
             {
                 PuzzlePlatform platform = hit.collider.GetComponent<PuzzlePlatform>();
                 if (platform != null)
                 {
                     selectedPlatform = platform;
-                    Debug.Log("Platform seçildi: " + platform.name);
+                    Debug.Log("✅ Platform selected: " + platform.name);
+                }
+                else
+                {
+                    Debug.Log("❌ Seçilen nesne bir platform değil.");
                 }
             }
         }
 
-        // 🔹 Eğer platform seçildiyse yön tuşlarına göre hareket ettir
+        // 🔹 Seçilen platformu hareket ettirme
         if (selectedPlatform != null)
         {
             if (Input.GetKeyDown(KeyCode.W))

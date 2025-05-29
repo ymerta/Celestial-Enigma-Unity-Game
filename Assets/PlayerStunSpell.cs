@@ -5,24 +5,25 @@ using System.Collections;
 
 public class PlayerStunSpell : MonoBehaviour
 {
-    public float stunRange = 5f;            // Büyünün etki alanı
-    public float stunDuration = 3f;         // Stun süresi
-    public float cooldown = 5f;             // Büyü tekrar kullanılabilir olana kadar geçen süre
+    public float stunRange = 5f;
+    public float stunDuration = 3f;
+    public float cooldown = 5f;
 
     private float lastUsedTime;
 
+    public bool hasStunSpell = false;
+
     [Header("UI Bileşenleri")]
-    public Image stunIcon;                  // UI'daki stun büyüsü ikonu
-    public TMP_Text stunCooldownText;       // Geri sayım yazısı
+    public Image stunIcon;
+    public TMP_Text stunCooldownText;
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E) && Time.time >= lastUsedTime + cooldown)
+        // ✅ Sadece büyü öğrenildiyse R tuşu çalışsın
+        if (hasStunSpell && Input.GetKeyDown(KeyCode.R) && Time.time >= lastUsedTime + cooldown)
         {
             CastStun();
             lastUsedTime = Time.time;
-
-            // UI'de cooldown göstergesi başlat
             StartCoroutine(SetStunIconCooldown(cooldown));
         }
     }
@@ -69,7 +70,7 @@ public class PlayerStunSpell : MonoBehaviour
         }
 
         if (stunIcon != null)
-            stunIcon.color = Color.white; // Geri beyazlat
+            stunIcon.color = Color.white;
 
         if (stunCooldownText != null)
             stunCooldownText.gameObject.SetActive(false);

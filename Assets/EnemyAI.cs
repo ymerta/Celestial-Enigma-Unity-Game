@@ -10,6 +10,7 @@ public class EnemyAI : MonoBehaviour
     public float moveSpeed = 2f;
     private Vector3 target;
     private bool stopMoving = false;
+    private Animator animator;
 
     [Header("Freeze Icon")]
     public GameObject freezeIconObject;
@@ -20,6 +21,9 @@ public class EnemyAI : MonoBehaviour
 
     void Start()
     {
+        // enemy2 alt nesnesindeki Animator'ü bul
+        animator = GetComponentInChildren<Animator>();
+
         target = pointA.position;
 
         if (freezeIconObject != null)
@@ -102,6 +106,10 @@ public class EnemyAI : MonoBehaviour
         isStunned = true;
         stunEndTime = Time.time + duration;
 
+        if (animator != null)
+            animator.speed = 0f;
+
+
         if (freezeIconObject != null)
             freezeIconObject.SetActive(true);
 
@@ -111,6 +119,9 @@ public class EnemyAI : MonoBehaviour
     private void Unstun()
     {
         isStunned = false;
+
+        if (animator != null)
+            animator.speed = 1f;
 
         if (freezeIconObject != null)
             freezeIconObject.SetActive(false);

@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 
 public class FallReset : MonoBehaviour
 {
-    public float resetYThreshold = -10f;         // Ne kadar aþaðý düþerse reset?
+    public float resetYThreshold = -30f;         // Ne kadar aþaðý düþerse reset?
     public Transform respawnPoint;               // Geri döneceði nokta
     public GameObject player;                    // Oyuncu objesi
 

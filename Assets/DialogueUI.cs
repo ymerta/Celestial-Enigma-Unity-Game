@@ -34,6 +34,6 @@ public class DialogueUI : MonoBehaviour
         dialogueText.text = "";
         dialogueText.gameObject.SetActive(false);
         canvasGroup.alpha = 0f;
-        dialoguePanel.SetActive(false);
+        
     }
 }
