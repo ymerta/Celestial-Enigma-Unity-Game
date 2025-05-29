@@ -84,6 +84,15 @@ public class EnemyAI : MonoBehaviour
         if (playerDetected)
         {
             transform.position = Vector3.MoveTowards(transform.position, player.position, moveSpeed * Time.deltaTime);
+
+            // 🔄 Oyuncuya bak
+            Vector3 lookPos = player.position - transform.position;
+            lookPos.y = 0; // Sadece yatay düzlemde döndür
+            if (lookPos != Vector3.zero)
+            {
+                Quaternion rotation = Quaternion.LookRotation(lookPos);
+                transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * 5f);
+            }
         }
     }
 

@@ -50,13 +50,14 @@ public bool isControllable = true; // dışarıdan kapatıp açmak için
             moveDirection.z = move.z;
 
             // ✅ Karakterin yönünü X ekseninde çevir (sağa/sola dönsün)
-            if (input.x != 0)
+            if (input.z != 0)
             {
-                float currentDirection = Mathf.Sign(input.x);
+                float currentDirection = Mathf.Sign(input.z);
                 Vector3 scale = transform.localScale;
-                scale.x = currentDirection * Mathf.Abs(scale.x);
+                scale.x = currentDirection * Mathf.Abs(scale.z);
                 transform.localScale = scale;
             }
+          
 
             bool isWalking = moveDirection.x != 0 || moveDirection.z != 0;
             animator.SetBool("isWalking", isWalking);

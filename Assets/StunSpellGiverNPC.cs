@@ -1,23 +1,26 @@
 ﻿using UnityEngine;
 
-public class LightOrbGiverNPC : MonoBehaviour
+public class StunSpellGiverNPC : MonoBehaviour
 {
-    public PlayerLightOrb playerScript;
-    public GameObject interactionUI; // "E’ye bas" mesajı (isteğe bağlı)
+    public PlayerStunSpell playerStunScript;
+    public GameObject interactionUI; // "E'ye bas" yazısı
     private bool playerInRange = false;
-    private bool hasGivenOrb = false;
+    private bool hasGivenStun = false;
+    public GameObject stunSpellSlotUI; // Inspector'dan SpellSlot2 atanacak
 
     void Update()
     {
-        if (playerInRange && !hasGivenOrb && Input.GetKeyDown(KeyCode.E))
+        if (playerInRange && !hasGivenStun && Input.GetKeyDown(KeyCode.E))
         {
-            playerScript.LearnLightOrb();
-            hasGivenOrb = true;
+            hasGivenStun = true;
 
             if (interactionUI != null)
                 interactionUI.SetActive(false);
 
+            if (stunSpellSlotUI != null)
+                stunSpellSlotUI.SetActive(true); // 🔹 UI'da stun slotunu görünür yap
         }
+
     }
 
     void OnTriggerEnter(Collider other)

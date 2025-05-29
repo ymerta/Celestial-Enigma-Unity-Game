@@ -17,11 +17,16 @@ public class PlayerLightOrb : MonoBehaviour
     private float lastUsedTime;
     private bool hasLearnedOrb = false;
     public TMP_Text orbCooldownText; // Inspector'dan atayacaksın
-
+    public string hideZoneTag = "HideZone"; // Inspector'dan ayarlanabilir
+    public Material highlightMaterial; // Highlight için
     void Start()
     {
         // Eğer bu MazeshiftRealm sahnesiyse, büyüyü otomatik öğrenmiş olarak başlasın
         if (SceneManager.GetActiveScene().name == "MazeShiftRealm")
+        {
+            LearnLightOrb();
+        }
+        if (SceneManager.GetActiveScene().name == "HidingFromEnemy")
         {
             LearnLightOrb();
         }
@@ -90,19 +95,23 @@ public class PlayerLightOrb : MonoBehaviour
     {
         Vector3 spawnPos = transform.position + Vector3.up * 1.2f;
 
+        // 🔍 En yakın kelebek / hide zone’u bul
+        GameObject targetZone = FindClosestHideZone(spawnPos);
+
         Vector3 direction;
 
-        if (correctPortal != null)
+        if (targetZone != null)
+        {
+            direction = (targetZone.transform.position - spawnPos).normalized;
+            HighlightHideZone(targetZone); // ✅ Kelebeği parlat
+        }
+        else if (correctPortal != null)
         {
             direction = (correctPortal.transform.position - spawnPos).normalized;
         }
         else
         {
-            // Oyuncunun sağa baktığı yön varsayılan olarak sağ (Vector3.right)
             direction = Vector3.right;
-
-            // Eğer oyuncunun yönünü alabileceğin bir sistem varsa (örneğin scale ile bakış yönü), onu da kullanabilirsin:
-            // direction = transform.right; // Bu da oyuncunun bakış yönü olur
         }
 
         GameObject orb = Instantiate(lightOrbPrefab, spawnPos, Quaternion.LookRotation(direction));
@@ -112,11 +121,52 @@ public class PlayerLightOrb : MonoBehaviour
         {
             rb.AddForce(direction * shootForce, ForceMode.VelocityChange);
         }
-        StartCoroutine(SetOrbIconCooldown(cooldown));
 
+        StartCoroutine(SetOrbIconCooldown(cooldown));
         Destroy(orb, orbLifetime);
     }
+    GameObject FindClosestHideZone(Vector3 fromPosition)
+    {
+        GameObject[] hideZones = GameObject.FindGameObjectsWithTag("HideZone");
+        GameObject closest = null;
+        float minDist = Mathf.Infinity;
 
+        foreach (GameObject zone in hideZones)
+        {
+            float dist = Vector3.Distance(fromPosition, zone.transform.position);
+            if (dist < minDist)
+            {
+                minDist = dist;
+                closest = zone;
+            }
+        }
+
+        return closest;
+    }
+
+
+    void HighlightHideZone(GameObject zone)
+    {
+        Renderer rend = zone.GetComponent<Renderer>();
+        if (rend != null && highlightMaterial != null)
+        {
+            Material originalMat = rend.material; // eski hali sakla
+            rend.material = highlightMaterial;
+
+            // 3 saniye sonra geri döndür
+            StartCoroutine(ResetMaterialAfterDelay(rend, originalMat, 3f));
+        }
+        else
+        {
+            Debug.LogWarning("Highlight başarısız: Renderer ya da Material eksik.");
+        }
+    }
+    IEnumerator ResetMaterialAfterDelay(Renderer rend, Material originalMat, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        if (rend != null)
+            rend.material = originalMat;
+    }
 
 
 }
